@@ -1,0 +1,54 @@
+name: Publish preview release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: xuewang-preview-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Validate assets and interaction behaviour
+        shell: powershell
+        run: ./tests/test-xuewang-dynamic.ps1
+
+      - name: Build clean preview archive
+        id: package
+        shell: powershell
+        run: |
+          $result = ./build-release.ps1 -OutputDirectory ./release
+          $result | Format-List
+          "version=$($result.Version)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "archive=$($result.Archive)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "checksum=$($result.Checksum)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Create preview release
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.package.outputs.version }}
+          ARCHIVE: ${{ steps.package.outputs.archive }}
+          CHECKSUM: ${{ steps.package.outputs.checksum }}
+        run: |
+          if ('${{ github.ref_type }}' -eq 'tag') {
+            $tag = '${{ github.ref_name }}'
+          } else {
+            $tag = "v$env:VERSION-preview-${{ github.run_number }}"
+          }
+          gh release create $tag "$env:ARCHIVE" "$env:CHECKSUM" `
+            --repo '${{ github.repository }}' `
+            --target '${{ github.sha }}' `
+            --title "雪王桌宠 $tag" `
+            --notes "由 ${{ github.sha }} 自动校验并打包。运行包不含源姿态、构建脚本和用户存档，解压后双击 启动动态雪王.vbs 即可运行。"

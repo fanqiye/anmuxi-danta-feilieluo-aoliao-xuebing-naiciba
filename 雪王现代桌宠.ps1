@@ -657,6 +657,7 @@ namespace XueWangDesktopPet {
         $backupStatePath = "$statePath.bak"
         $stateCommitSucceeded = $false
         try {
+            [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($statePath)) | Out-Null
             [IO.File]::WriteAllText($temporaryStatePath, $payload, [Text.UTF8Encoding]::new($false))
             if (Test-Path -LiteralPath $statePath) {
                 if ($script:stateRecoveredFromBackup) {
@@ -678,6 +679,8 @@ namespace XueWangDesktopPet {
             }
             $stateCommitSucceeded = $true
             $script:stateRecoveredFromBackup = $false
+        } catch {
+            Write-Verbose "存档写入失败：$($_.Exception.Message)"
         } finally {
             if ($stateCommitSucceeded -and (Test-Path -LiteralPath $temporaryStatePath)) { Remove-Item -LiteralPath $temporaryStatePath -Force -ErrorAction SilentlyContinue }
         }
@@ -1657,6 +1660,12 @@ namespace XueWangDesktopPet {
     $invokeRegionInteraction = {
         param([string]$Region, [switch]$LongPress, [switch]$FromSleep)
         if ($Region -eq 'head' -and -not $FromSleep -and -not $LongPress) { & $invokePetHead; return }
+        $now = Get-Date
+        if (-not $LongPress -and -not $FromSleep -and $script:regionCooldownUntil.ContainsKey($Region) -and $now -lt [datetime]$script:regionCooldownUntil[$Region]) {
+            & $showBriefState 'pout' 1200
+            & $showFeedback "$([string]$regionLabels[$Region]) 还在记仇" '她记住了刚才的连戳，暂时不让碰这里。' 'boundary' 0 0 0 2200
+            return
+        }
         & $markInteraction
         $script:interactionCount++
         $script:bodyReactionCount++
@@ -2838,6 +2847,7 @@ namespace XueWangDesktopPet {
     $controlStack.Children.Add($archivePage) | Out-Null
     $controlStack.Children.Add($artifactPage) | Out-Null
     $controlStack.Children.Add($interactionPage) | Out-Null
+    $controlStack.Children.Add($settingsPage) | Out-Null
     & $setPanelPage 'archive'
     & $refreshArtifactPage
 

@@ -9,11 +9,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate assets and interaction behavior
         shell: powershell
-        run: ./tests/test-xuewang-dynamic.ps1
+        run: ./tests/test-desktop-pet.ps1
       - name: Build clean preview archive
         shell: powershell
         run: ./build-release.ps1 -OutputDirectory ./release
       - uses: actions/upload-artifact@v4
         with:
-          name: snowcourt-preview
+          name: desktop-pet-preview
           path: release/*

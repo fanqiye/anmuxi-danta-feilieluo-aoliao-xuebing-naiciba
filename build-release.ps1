@@ -9,8 +9,8 @@ $version = (Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'VERSION')).T
 if ($version -notmatch '^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$') { throw "VERSION 格式无效：$version" }
 
 $requiredFiles = @(
-    '雪王现代桌宠.ps1',
-    '启动动态雪王.vbs',
+    'desktop-pet.ps1',
+    '启动桌宠.vbs',
     'design-tokens.json',
     'README.md',
     'VERSION',
@@ -25,10 +25,10 @@ $resolvedOutput = [IO.Path]::GetFullPath($OutputDirectory)
 [IO.Directory]::CreateDirectory($resolvedOutput) | Out-Null
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $safeVersion = $version -replace '[^0-9A-Za-z.-]', '-'
-$packageBase = "SnowCourt-XueWangPet-$safeVersion-$stamp"
+$packageBase = "anmuxi-danta-feilieluo-aoliao-xuebing-naiciba-$safeVersion-$stamp"
 $archivePath = Join-Path $resolvedOutput "$packageBase.zip"
 $checksumPath = "$archivePath.sha256.txt"
-$stagingRoot = [IO.Path]::Combine([IO.Path]::GetTempPath(), "xuewang-release-$([Guid]::NewGuid().ToString('N'))")
+$stagingRoot = [IO.Path]::Combine([IO.Path]::GetTempPath(), "desktop-pet-release-$([Guid]::NewGuid().ToString('N'))")
 
 try {
     [IO.Directory]::CreateDirectory($stagingRoot) | Out-Null

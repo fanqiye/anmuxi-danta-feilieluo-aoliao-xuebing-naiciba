@@ -1,8 +1,8 @@
-# 雪王现代桌宠
+# 安慕希蛋挞·费列罗奥利奥·雪饼奶糍粑
 
 这是一个独立的 Windows WPF 桌宠，形象融合了至冬女皇的银蓝色冰雪气质、雪王的圆滚外形与甜筒权杖，以及“咕咕嘎嘎”的幼崽互联网气质。它和菜狗桌宠的进程、素材和存档完全分开，可以同时运行。
 
-当前版本：`0.9.0-rc.4`。这一版修复了设置页不可达、部位连戳冷却未生效，以及存档写入异常会直接终止桌宠的问题。此前的 `0.9.0-rc.3` 完成了“雪王陪伴屋”视觉重做、系统托盘、多屏防丢失、首次引导、偏好记忆、标准用户数据目录和干净发布包，并新增设置面板、开机自启、交互音效、时段感知台词和系统状态监控。它仍是**未获商业授权的非官方二创预览版**；收费上架前先看 `COMMERCIALIZATION.md`。
+当前版本：`0.9.0-rc.5`。项目已更名为“安慕希蛋挞·费列罗奥利奥·雪饼奶糍粑”，本版包含设置页、部位连戳冷却和存档写入异常的修复，以及“休息片刻”入口。它仍是**未获商业授权的非官方二创预览版**；收费上架前先看 `COMMERCIALIZATION.md`。
 
 | 待机 | 摸头 | 冰术 |
 | --- | --- | --- |
@@ -10,8 +10,8 @@
 
 ## 启动
 
-- 双击 `启动动态雪王.vbs`，会静默启动，不弹 PowerShell 黑窗口。
-- 也可运行 `powershell.exe -NoProfile -ExecutionPolicy Bypass -STA -File .\雪王现代桌宠.ps1`。
+- 双击 `启动桌宠.vbs`，会静默启动，不弹 PowerShell 黑窗口。
+- 也可运行 `powershell.exe -NoProfile -ExecutionPolicy Bypass -STA -File .\desktop-pet.ps1`。
 - 默认不创建桌面快捷方式、不启用开机自启；可在设置或托盘中手动开启自启。
 - 启动后会常驻系统托盘；双击托盘图标可打开陪伴屋，右键可找回桌宠或安全退出。
 
@@ -23,7 +23,7 @@
 - 左键按住约 0.85 秒会触发长按反应，例如脸颊压扁回弹、揉肚皮、披风裹团、权杖蓄力反噬和抱雪球滑行。
 - 睡着时仍按部位区分：王冠弹飞、睡脸压痕、耳朵抖动、梦中护食、抱紧权杖、卷披风或梦中踢腿，不再全部使用同一种惊醒。
 - 连续碰不同部位可触发组合剧情：王冠→权杖、权杖→披风、披风→小脚、投喂→肚皮、左右耳交替。
-- 右键雪王可明确打开或关闭“雪王陪伴屋”。单纯悬停、普通点击和随行巡游中的停驻都不会自动弹出面板。
+- 右键雪王可明确打开或关闭“陪伴屋”。单纯悬停、普通点击和随行巡游中的停驻都不会自动弹出面板。
 - 陪伴屋有四个页面：“近况”查看六项状态、快捷照顾和最近记录，“互动”提供九个身体触点与八种陪伴动作，“珍藏”用于五槽甜品珍藏与套装组合，“设置”调整陪伴模式、大小、自启、音效等偏好。
 - 陪伴屋打开时，交互台词显示在面板内部的固定回执区域；关闭面板后，台词恢复为贴近雪王的轻量语言条。
 - 操作卡支持鼠标、Tab、Enter 和空格；桌宠不会再被拖出当前显示器的可用工作区。
@@ -88,8 +88,8 @@
 
 ## 文件
 
-- `雪王现代桌宠.ps1`：主程序。
-- `启动动态雪王.vbs`：UTF-16LE 静默启动器。
+- `desktop-pet.ps1`：主程序。
+- `启动桌宠.vbs`：UTF-16LE 静默启动器。
 - `assets-source`：二十张统一角色设定的透明主姿态。
 - `assets-hq`：实际动画帧和 `manifest.json`。
 - `build-snowking-assets.ps1`：从主姿态可重建全部动画帧。
@@ -97,7 +97,7 @@
 - `VERSION`：当前版本号。
 - `COMMERCIALIZATION.md`：收费上架前的权利与工程清单。
 - `NOTICE.txt`：随预览包分发的非官方二创说明。
-- `tests\test-xuewang-dynamic.ps1`：资源、启动器、作息、互动与持久化自检。
+- `tests\test-desktop-pet.ps1`：资源、启动器、作息、互动与持久化自检。
 - `INTERACTION-DESIGN.md`：九部位、情境反应、组合动作、四页陪伴屋与珍藏数据规则说明。
 
 ## 素材说明
@@ -115,16 +115,16 @@ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\build-release.
 ## 验证
 
 ```powershell
-powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\tests\test-xuewang-dynamic.ps1
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\tests\test-desktop-pet.ps1
 ```
 
-通过时输出 `XUEWANG_DYNAMIC_TEST_OK`。
+通过时输出 `DESKTOP_PET_TEST_OK`。
 
 ## 公开源码与下载
 
-- [GitHub 源码](https://github.com/fanqiye/xuewang-desktop-pet)
-- [最新预览运行包](https://github.com/fanqiye/xuewang-desktop-pet/releases/latest)
-- [Windows 自动检查](https://github.com/fanqiye/xuewang-desktop-pet/actions)
+- [GitHub 源码](https://github.com/fanqiye/anmuxi-danta-feilieluo-aoliao-xuebing-naiciba)
+- [最新预览运行包](https://github.com/fanqiye/anmuxi-danta-feilieluo-aoliao-xuebing-naiciba/releases/latest)
+- [Windows 自动检查](https://github.com/fanqiye/anmuxi-danta-feilieluo-aoliao-xuebing-naiciba/actions)
 
 运行包解压后双击启动器即可体验；源码仓库保留素材构建脚本和测试。
 形象来源和使用范围见 `NOTICE.txt`。用户存档、日志和备份不进入源码仓库或运行包。

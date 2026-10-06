@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: xuewang-preview-release
+  group: desktop-pet-preview-release
   cancel-in-progress: false
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
 
       - name: Validate assets and interaction behaviour
         shell: powershell
-        run: ./tests/test-xuewang-dynamic.ps1
+        run: ./tests/test-desktop-pet.ps1
 
       - name: Build clean preview archive
         id: package
@@ -50,5 +50,5 @@ jobs:
           gh release create $tag "$env:ARCHIVE" "$env:CHECKSUM" `
             --repo '${{ github.repository }}' `
             --target '${{ github.sha }}' `
-            --title "雪王桌宠 $tag" `
-            --notes "由 ${{ github.sha }} 自动校验并打包。运行包不含源姿态、构建脚本和用户存档，解压后双击 启动动态雪王.vbs 即可运行。"
+            --title "安慕希蛋挞·费列罗奥利奥·雪饼奶糍粑 $tag" `
+            --notes "由 ${{ github.sha }} 自动校验并打包。运行包不含源姿态、构建脚本和用户存档，解压后双击 启动桌宠.vbs 即可运行。"

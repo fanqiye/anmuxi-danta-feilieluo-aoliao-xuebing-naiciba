@@ -9,6 +9,7 @@
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+$appName = '安慕希蛋挞·费列罗奥利奥·雪饼奶糍粑'
 
 $script:createdNew = $false
 $mutexName = if ($SelfTest) { 'Local\XueWangModernPet_20260817_SelfTest' } elseif ($PersistenceProbe) { 'Local\XueWangModernPet_20260817_PersistenceProbe' } else { 'Local\XueWangModernPet_20260817' }
@@ -431,7 +432,7 @@ namespace XueWangDesktopPet {
     }
 
     $window = [Windows.Window]::new()
-    $window.Title = '雪王现代桌宠'
+    $window.Title = $appName
     $window.Width = [double]$script:savedPetWidth
     $window.Height = [Math]::Round($window.Width * 1.103)
     $window.WindowStyle = [Windows.WindowStyle]::None
@@ -498,7 +499,7 @@ namespace XueWangDesktopPet {
     $script:lastFeedback = $null
     $script:feedbackPresentation = 'none'
     $feedbackWindow = [Windows.Window]::new()
-    $feedbackWindow.Title = '雪王反馈'
+    $feedbackWindow.Title = "$appName · 反馈"
     $feedbackWindow.WindowStyle = [Windows.WindowStyle]::None
     $feedbackWindow.ResizeMode = [Windows.ResizeMode]::NoResize
     $feedbackWindow.AllowsTransparency = $true
@@ -710,11 +711,11 @@ namespace XueWangDesktopPet {
     $autoStartRegKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
     $autoStartValueName = 'XueWangDesktopPet'
     $getAutoStartCommand = {
-        $vbsPath = Join-Path $PSScriptRoot '启动动态雪王.vbs'
+        $vbsPath = Join-Path $PSScriptRoot '启动桌宠.vbs'
         if (Test-Path -LiteralPath $vbsPath) {
             return "wscript.exe `"$vbsPath`""
         }
-        $ps1Path = Join-Path $PSScriptRoot '雪王现代桌宠.ps1'
+        $ps1Path = Join-Path $PSScriptRoot 'desktop-pet.ps1'
         return "powershell.exe -NoProfile -ExecutionPolicy Bypass -STA -WindowStyle Hidden -File `"$ps1Path`""
     }
     $isAutoStartEnabled = {
@@ -2243,7 +2244,7 @@ namespace XueWangDesktopPet {
     }
 
     $controlWindow = [Windows.Window]::new()
-    $controlWindow.Title = '雪王陪伴屋'
+    $controlWindow.Title = "$appName · 陪伴屋"
     $controlWindow.WindowStyle = [Windows.WindowStyle]::None
     $controlWindow.ResizeMode = [Windows.ResizeMode]::NoResize
     $controlWindow.AllowsTransparency = $true
@@ -2302,8 +2303,9 @@ namespace XueWangDesktopPet {
     [Windows.Controls.Grid]::SetColumn($brandMark,0)
     $headerGrid.Children.Add($brandMark) | Out-Null
     $headerLeft = [Windows.Controls.StackPanel]::new()
-    $headerEyebrow = & $newPanelText 'SNOWCOURT · DESKTOP COMPANION' 8.5 'SemiBold' 'identity'
-    $headerTitle = & $newPanelText '雪王陪伴屋' 18 'SemiBold' 'ink'
+    $headerEyebrow = & $newPanelText 'DESKTOP COMPANION · 陪伴屋' 8.5 'SemiBold' 'identity'
+    $headerTitle = & $newPanelText $appName 18 'SemiBold' 'ink'
+    $headerTitle.TextWrapping = [Windows.TextWrapping]::Wrap
     $headerTitle.Margin = [Windows.Thickness]::new(0, 2, 0, 0)
     $controlStatusText = & $newPanelText '正在看看今天过得怎么样' 10 'Normal' 'muted'
     $controlStatusText.Margin = [Windows.Thickness]::new(0, 2, 0, 0)
@@ -2655,7 +2657,7 @@ namespace XueWangDesktopPet {
     $artifactPage.Children.Add($artifactNoticeText) | Out-Null
 
     # === 设置页面 ===
-    $settingsIntro = & $newPanelText '雪王偏好设置' 12 'SemiBold' 'ink'
+    $settingsIntro = & $newPanelText '陪伴偏好设置' 12 'SemiBold' 'ink'
     $settingsIntro.Margin = [Windows.Thickness]::new(0,0,0,4)
     $settingsPage.Children.Add($settingsIntro) | Out-Null
     $settingsHint = & $newPanelText '调整陪伴方式，所有设置会自动保存。' 9.5 'Normal' 'muted'
@@ -2755,7 +2757,8 @@ namespace XueWangDesktopPet {
     $settingsAboutDivider.Background = & $brush $color.Divider
     $settingsAboutDivider.Margin = [Windows.Thickness]::new(3,12,3,8)
     $settingsPage.Children.Add($settingsAboutDivider) | Out-Null
-    $settingsAboutTitle = & $newPanelText '关于雪王桌宠' 10.5 'SemiBold' 'identity'
+    $settingsAboutTitle = & $newPanelText "关于 $appName" 10.5 'SemiBold' 'identity'
+    $settingsAboutTitle.TextWrapping = [Windows.TextWrapping]::Wrap
     $settingsPage.Children.Add($settingsAboutTitle) | Out-Null
     $versionText = if (Test-Path (Join-Path $PSScriptRoot 'VERSION')) { Get-Content (Join-Path $PSScriptRoot 'VERSION') -Raw } else { '0.9.0' }
     $settingsAboutVer = & $newPanelText "版本 $versionText" 9.5 'Normal' 'muted'
@@ -3053,7 +3056,7 @@ namespace XueWangDesktopPet {
 
             $notifyIcon = [Windows.Forms.NotifyIcon]::new()
             $notifyIcon.Icon = $trayIcon
-            $notifyIcon.Text = '雪王桌宠 · 双击打开陪伴屋'
+            $notifyIcon.Text = "$appName · 双击打开陪伴屋"
             $notifyIcon.ContextMenuStrip = $trayContextMenu
             $notifyIcon.Add_DoubleClick({ & $showControlPanel }.GetNewClosure())
             $notifyIcon.Visible = $true
@@ -3065,7 +3068,7 @@ namespace XueWangDesktopPet {
     }
 
     $absenceWindow = [Windows.Window]::new()
-    $absenceWindow.Title = '雪王不在桌面'
+    $absenceWindow.Title = "$appName · 暂别"
     $absenceWindow.WindowStyle = [Windows.WindowStyle]::None
     $absenceWindow.ResizeMode = [Windows.ResizeMode]::NoResize
     $absenceWindow.AllowsTransparency = $true
@@ -3320,7 +3323,7 @@ namespace XueWangDesktopPet {
             if (-not $script:welcomeSeen) {
                 $script:welcomeSeen = $true
                 if ($script:interactionCount -eq 0) {
-                    & $showFeedback '欢迎来到雪王陪伴屋' '点她会回应，长按藏着小剧情；右键或双击托盘图标可以随时打开陪伴屋。' 'positive' 0 0 0 5600
+                    & $showFeedback '欢迎来到陪伴屋' '点她会回应，长按藏着小剧情；右键或双击托盘图标可以随时打开陪伴屋。' 'positive' 0 0 0 5600
                 }
                 & $saveState
             }
@@ -3369,6 +3372,7 @@ namespace XueWangDesktopPet {
             $modernFeedbackOk = ($feedbackCard.CornerRadius.TopLeft -ge 14 -and $feedbackCard.Effect.BlurRadius -ge 18)
             $modernPanelOk = ($controlCard.CornerRadius.TopLeft -ge 24 -and $controlCard.Width -ge 420 -and $statWidgets.Count -eq 6 -and $quickCareGrid.Children.Count -eq 3 -and $actionGrid.Children.Count -eq 8 -and $interactionRegionGrid.Children.Count -eq 9 -and $controlGrid.Children.Count -eq 3 -and $tabGrid.Children.Count -eq 4 -and $settingsPage.Children.Count -ge 5 -and $panelPortrait -ne $null -and $eventTextBlocks.Count -eq 3 -and $archiveTab.Focusable -and [Windows.Automation.AutomationProperties]::GetName($archiveTab) -match '近况' -and $null -eq $petImage.ContextMenu)
             $settingsPageOk = ($settingsPage.Children.Count -ge 5 -and $controlStack.Children.Contains($settingsPage))
+            $projectNameOk = ($window.Title -eq $appName -and $controlWindow.Title -eq "$appName · 陪伴屋" -and $feedbackWindow.Title -eq "$appName · 反馈" -and $absenceWindow.Title -eq "$appName · 暂别" -and $headerTitle.Text -eq $appName -and $headerTitle.TextWrapping -eq [Windows.TextWrapping]::Wrap -and $settingsAboutTitle.Text -eq "关于 $appName")
             $soundSystemOk = $true
             foreach ($kind in @('click','pet','feed','happy','sad','sleep','wake','error','success')) {
                 if ((& $getPetSound $kind) -isnot [System.Media.SystemSound]) { $soundSystemOk = $false }
@@ -3645,7 +3649,7 @@ namespace XueWangDesktopPet {
             $followTimer.Stop()
             $nudgeWindowOk = ($script:nextNudgeAt -gt (Get-Date).AddMinutes(39))
             $persistenceOk = $statePath.EndsWith('state.json')
-            $script:selfTestResult = "SELF_TEST_OK renderer=WPF hqFrames=$hqFramesOk expressionStates=$($script:frames.Count) expressionLogic=$expressionStatesOk hitRegions=$($bodyHitRegions.Count) regionSpecific=$regionSpecificOk gentleTouch=$gentleTouchOk sleepRegions=$sleepRegionOk longPress=$longPressOk comboSystem=$comboSystemOk greedSystem=$greedSystemOk bullySystem=$bullySystemOk modernFeedback=$modernFeedbackOk modernPanel=$modernPanelOk manualPanel=$manualPanelOk panelFeedback=$panelFeedbackOk cleanHoverHint=$cleanHoverHintOk settingsPage=$settingsPageOk soundSystem=$soundSystemOk traySound=$traySoundOk artifactSlots=$($artifactSlots.Count) artifactItems=$($artifactItems.Count) artifactSets=$($artifactSets.Count) artifactSystem=$artifactSystemOk artifactUi=$artifactUiOk artifactPersistence=$artifactPersistenceOk artifactDiskLoad=$artifactDiskLoadOk stateBackupRecovery=$stateBackupRecoveryOk stateTransactionalLoad=$stateTransactionalLoadOk sweetCareZero=$sweetCareZeroOk shakeDismantle=$shakeDismantleOk staminaRecovery=$staminaRecoveryOk ambientRoutines=$($allAmbientNames.Count) ambientVariety=$ambientPlansOk naturalSchedule=$naturalScheduleOk naturalStart=$naturalStartOk staticRest=$staticRestOk interactions=$baseInteractions interactionLogic=$interactionOk affectionCanDecrease=$affectionCanDecrease lifeSystem=$lifeSystemOk departureReachable=$departureReachable followMode=$followModeOk nudgeWindow=$nudgeWindowOk persistence=$persistenceOk"
+            $script:selfTestResult = "SELF_TEST_OK projectName=$projectNameOk renderer=WPF hqFrames=$hqFramesOk expressionStates=$($script:frames.Count) expressionLogic=$expressionStatesOk hitRegions=$($bodyHitRegions.Count) regionSpecific=$regionSpecificOk gentleTouch=$gentleTouchOk sleepRegions=$sleepRegionOk longPress=$longPressOk comboSystem=$comboSystemOk greedSystem=$greedSystemOk bullySystem=$bullySystemOk modernFeedback=$modernFeedbackOk modernPanel=$modernPanelOk manualPanel=$manualPanelOk panelFeedback=$panelFeedbackOk cleanHoverHint=$cleanHoverHintOk settingsPage=$settingsPageOk soundSystem=$soundSystemOk traySound=$traySoundOk artifactSlots=$($artifactSlots.Count) artifactItems=$($artifactItems.Count) artifactSets=$($artifactSets.Count) artifactSystem=$artifactSystemOk artifactUi=$artifactUiOk artifactPersistence=$artifactPersistenceOk artifactDiskLoad=$artifactDiskLoadOk stateBackupRecovery=$stateBackupRecoveryOk stateTransactionalLoad=$stateTransactionalLoadOk sweetCareZero=$sweetCareZeroOk shakeDismantle=$shakeDismantleOk staminaRecovery=$staminaRecoveryOk ambientRoutines=$($allAmbientNames.Count) ambientVariety=$ambientPlansOk naturalSchedule=$naturalScheduleOk naturalStart=$naturalStartOk staticRest=$staticRestOk interactions=$baseInteractions interactionLogic=$interactionOk affectionCanDecrease=$affectionCanDecrease lifeSystem=$lifeSystemOk departureReachable=$departureReachable followMode=$followModeOk nudgeWindow=$nudgeWindowOk persistence=$persistenceOk"
             $exitTrayItem.PerformClick()
             $script:selfTestResult += " trayExit=$(-not $window.IsVisible)"
         })
@@ -3666,7 +3670,7 @@ namespace XueWangDesktopPet {
         $log = Join-Path ([IO.Path]::GetTempPath()) 'xuewang-modern-error.log'
         [IO.File]::WriteAllText($log, $errorText, [Text.Encoding]::UTF8)
     }
-    if (-not $SelfTest -and -not $PersistenceProbe) { [Windows.MessageBox]::Show("雪王启动失败，详情见：`r`n$log", '雪王现代桌宠') | Out-Null }
+    if (-not $SelfTest -and -not $PersistenceProbe) { [Windows.MessageBox]::Show("启动失败，详情见：`r`n$log", $appName) | Out-Null }
     throw
 } finally {
     if ($script:createdNew) { try { $script:mutex.ReleaseMutex() } catch {} }

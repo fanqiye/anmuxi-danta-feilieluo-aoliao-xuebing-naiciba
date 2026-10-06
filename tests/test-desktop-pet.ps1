@@ -2,8 +2,8 @@
 $ErrorActionPreference = 'Stop'
 
 $root = Split-Path -Parent $PSScriptRoot
-$scriptPath = Join-Path $root '雪王现代桌宠.ps1'
-$vbsPath = Join-Path $root '启动动态雪王.vbs'
+$scriptPath = Join-Path $root 'desktop-pet.ps1'
+$vbsPath = Join-Path $root '启动桌宠.vbs'
 $manifestPath = Join-Path $root 'assets-hq\manifest.json'
 $sourceDir = Join-Path $root 'assets-source'
 $tokenPath = Join-Path $root 'design-tokens.json'
@@ -16,7 +16,7 @@ if (-not (Test-Path -LiteralPath $tokenPath)) { $errors.Add('缺少现代设计�
 if (-not (Test-Path -LiteralPath $sourceDir)) { $errors.Add('缺少透明主姿态素材') }
 
 $vbsText = Get-Content -Raw -LiteralPath $vbsPath
-if ($vbsText -notmatch [regex]::Escape('雪王现代桌宠.ps1')) { $errors.Add('隐藏启动器没有指向现代桌宠') }
+if ($vbsText -notmatch [regex]::Escape('desktop-pet.ps1')) { $errors.Add('隐藏启动器没有指向现代桌宠') }
 $vbsBytes = [IO.File]::ReadAllBytes($vbsPath)
 if ($vbsBytes.Length -lt 2 -or $vbsBytes[0] -ne 0xFF -or $vbsBytes[1] -ne 0xFE) { $errors.Add('隐藏启动器不是 WSH 兼容的 UTF-16LE 编码') }
 
@@ -72,7 +72,7 @@ if (Test-Path -LiteralPath $sourceDir) {
 
 if (Test-Path -LiteralPath $scriptPath) {
     $scriptText = Get-Content -Raw -LiteralPath $scriptPath
-    foreach ($feature in 'state.json','LocalApplicationData','preferences','welcomeSeen','NotifyIcon','getCursorWorkAreaDip','petting','feeding','sleeping','feedbackCard','nextNudgeAt','ignoredNudges','petCooldownUntil','lastBondDecay','affectionCanDecrease','BitmapScalingMode','assets-hq','ambientRoutineNames','ambientTimer','activityPhase','cursor-curious','dream-twitch','wake-stretch','holdState','health','stamina','petStatus','departureReason','controlWindow','showControlPanel','toggleControlPanel','followMode','stopFollowing','returnHomeMode','craving','grievance','invokeRegionInteraction','resolveHitRegion','regionTapCounts','longPressCount','comboReactionCount','reactionSteps','recentEvents','interactionRegionGrid','quickCareGrid','panelPortrait','panelConclusion','panelFeedbackHost','archivePage','interactionPage','artifactPage','artifactSlots','artifactItems','artifactSets','artifactSlotGrid','artifactChoiceGrid','artifactEquipped','artifactEffects','雪王陪伴屋','国民常青','摇摇雪顶','极夜甜品宫','doro-crawl','pancake-fall','crown-chase','snack-struggle','cape-burrito','休息片刻') {
+    foreach ($feature in 'state.json','LocalApplicationData','preferences','welcomeSeen','NotifyIcon','getCursorWorkAreaDip','petting','feeding','sleeping','feedbackCard','nextNudgeAt','ignoredNudges','petCooldownUntil','lastBondDecay','affectionCanDecrease','BitmapScalingMode','assets-hq','ambientRoutineNames','ambientTimer','activityPhase','cursor-curious','dream-twitch','wake-stretch','holdState','health','stamina','petStatus','departureReason','controlWindow','showControlPanel','toggleControlPanel','followMode','stopFollowing','returnHomeMode','craving','grievance','invokeRegionInteraction','resolveHitRegion','regionTapCounts','longPressCount','comboReactionCount','reactionSteps','recentEvents','interactionRegionGrid','quickCareGrid','panelPortrait','panelConclusion','panelFeedbackHost','archivePage','interactionPage','artifactPage','artifactSlots','artifactItems','artifactSets','artifactSlotGrid','artifactChoiceGrid','artifactEquipped','artifactEffects','安慕希蛋挞·费列罗奥利奥·雪饼奶糍粑','国民常青','摇摇雪顶','极夜甜品宫','doro-crawl','pancake-fall','crown-chase','snack-struggle','cape-burrito','休息片刻') {
         if ($scriptText -notmatch [regex]::Escape($feature)) { $errors.Add("缺少成熟互动机制：$feature") }
     }
 
@@ -132,7 +132,7 @@ if ($errors.Count -gt 0) {
 
 $output = & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -STA -File $scriptPath -SelfTest 2>&1 | Out-String
 $requiredMarkers = @(
-    'SELF_TEST_OK','soundSystem=True','traySound=True','trayExit=True','renderer=WPF','hqFrames=True','expressionStates=52','expressionLogic=True','hitRegions=9','regionSpecific=True','gentleTouch=True','sleepRegions=True','longPress=True','comboSystem=True','greedSystem=True','bullySystem=True','modernFeedback=True','modernPanel=True','manualPanel=True','panelFeedback=True',
+    'SELF_TEST_OK','projectName=True','settingsPage=True','soundSystem=True','traySound=True','trayExit=True','renderer=WPF','hqFrames=True','expressionStates=52','expressionLogic=True','hitRegions=9','regionSpecific=True','gentleTouch=True','sleepRegions=True','longPress=True','comboSystem=True','greedSystem=True','bullySystem=True','modernFeedback=True','modernPanel=True','manualPanel=True','panelFeedback=True',
     'cleanHoverHint=True','artifactSlots=5','artifactItems=15','artifactSets=3','artifactSystem=True','artifactUi=True','artifactPersistence=True','artifactDiskLoad=True','stateBackupRecovery=True','stateTransactionalLoad=True','sweetCareZero=True','shakeDismantle=True','staminaRecovery=True',
     'ambientRoutines=53','ambientVariety=True','naturalSchedule=True','naturalStart=True',
     'staticRest=True','interactions=3','interactionLogic=True','affectionCanDecrease=True',
@@ -228,4 +228,4 @@ if ($errors.Count -gt 0) {
     exit 1
 }
 
-Write-Output 'XUEWANG_DYNAMIC_TEST_OK'
+Write-Output 'DESKTOP_PET_TEST_OK'
